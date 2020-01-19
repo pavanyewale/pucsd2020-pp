@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "include/functions.h"
+#include "../include/functions.h"
 int main(void)
 {
     char str[1000];
