@@ -8,13 +8,13 @@ import (
 	"pucsd2020-pp/user_service/model"
 )
 
-type userRepository struct {
+type permissionRepository struct {
 	conn *sql.DB
 }
 
-//NewUserRepository ...
-func NewUserRepository(conn *sql.DB) *userRepository {
-	return &userRepository{conn: conn}
+//NewPermissionRepository ...
+func NewPermissionRepository(conn *sql.DB) *permissionRepository {
+	return &permissionRepository{conn: conn}
 }
 
 func (user *userRepository) GetByID(cntx context.Context, id int64) (interface{}, error) {

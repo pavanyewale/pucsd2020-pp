@@ -32,6 +32,7 @@ func init() {
 
 	handlers = []handler.IHTTPHandler{
 		httpHandler.NewUserHandler(dbConn),
+		httpHandler.
 	}
 }
 

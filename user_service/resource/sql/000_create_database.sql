@@ -1,1 +1,1 @@
-CREATE DATABASE restapi;
+CREATE DATABASE user_service;
