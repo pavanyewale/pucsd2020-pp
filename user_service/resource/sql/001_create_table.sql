@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS user_detail (
     last_update         DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )ENGINE = INNODB CHARACTER SET=utf8;
 ;
+
 CREATE TABLE IF NOT EXISTS permission (
     id                  INT         AUTO_INCREMENT      PRIMARY KEY,
     permission_name          CHAR(25)    NOT NULL,
@@ -21,6 +22,7 @@ CREATE TABLE IF NOT EXISTS permission (
     creation_date       DATETIME    DEFAULT CURRENT_TIMESTAMP,
     last_update         DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )ENGINE = INNODB CHARACTER SET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS user_permission (
     id                  INT         AUTO_INCREMENT      PRIMARY KEY,
@@ -32,6 +34,7 @@ CREATE TABLE IF NOT EXISTS user_permission (
     last_update         DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )ENGINE = INNODB CHARACTER SET=utf8;
 
+
 CREATE TABLE IF NOT EXISTS group (
     id                  INT         AUTO_INCREMENT      PRIMARY KEY,
     group_name          CHAR(25)    NOT NULL,
@@ -40,6 +43,7 @@ CREATE TABLE IF NOT EXISTS group (
     creation_date       DATETIME    DEFAULT CURRENT_TIMESTAMP,
     last_update         DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )ENGINE = INNODB CHARACTER SET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS group_permission (
     id                  INT         AUTO_INCREMENT      PRIMARY KEY,
@@ -50,6 +54,7 @@ CREATE TABLE IF NOT EXISTS group_permission (
     creation_date       DATETIME    DEFAULT CURRENT_TIMESTAMP,
     last_update         DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )ENGINE = INNODB CHARACTER SET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS user_group (
     id                  INT         AUTO_INCREMENT      PRIMARY KEY,
