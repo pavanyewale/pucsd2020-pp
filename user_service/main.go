@@ -29,7 +29,7 @@ func init() {
 		log.Printf("Error while creating db connectiion:%s", err.Error())
 		os.Exit(1)
 	}
-
+	log.Printf("dbConn sucessfull")
 	handlers = []handler.IHTTPHandler{
 		httpHandler.NewUserHandler(dbConn),
 		httpHandler.NewPermissionHandler(dbConn),

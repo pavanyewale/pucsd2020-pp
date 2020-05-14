@@ -7,7 +7,7 @@ type Group struct {
 }
 
 func (group *Group) Table() string {
-	return "group"
+	return "all_groups"
 }
 
 func (group *Group) String() string {
