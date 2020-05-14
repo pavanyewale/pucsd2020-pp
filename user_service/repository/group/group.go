@@ -12,8 +12,8 @@ type groupRepository struct {
 	conn *sql.DB
 }
 
-//NewUserRepository ...
-func NewUserRepository(conn *sql.DB) *groupRepository {
+//NewGroupRepository ...
+func NewGroupRepository(conn *sql.DB) *groupRepository {
 	return &groupRepository{conn: conn}
 }
 

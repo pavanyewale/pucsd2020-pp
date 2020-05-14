@@ -8,23 +8,23 @@ import (
 	"pucsd2020-pp/user_service/model"
 )
 
-type permissionRepository struct {
+type groupPermissionRepository struct {
 	conn *sql.DB
 }
 
-//NewUserRepository ...
-func NewUserRepository(conn *sql.DB) *permissionRepository {
-	return &permissionRepository{conn: conn}
+//NewGroupPermissionRepository ...
+func NewGroupPermissionRepository(conn *sql.DB) *groupPermissionRepository {
+	return &groupPermissionRepository{conn: conn}
 }
 
-func (perm *permissionRepository) GetByID(cntx context.Context, id int64) (interface{}, error) {
-	obj := new(model.Permission)
-	return driver.GetById(perm.conn, obj, id)
+func (gpr *groupPermissionRepository) GetByID(cntx context.Context, id int64) (interface{}, error) {
+	obj := new(model.GroupPermission)
+	return driver.GetById(gpr.conn, obj, id)
 }
 
-func (perm *permissionRepository) Create(cntx context.Context, obj interface{}) (interface{}, error) {
-	permission := obj.(model.Permission)
-	result, err := driver.Create(perm.conn, &permission)
+func (gpr *groupPermissionRepository) Create(cntx context.Context, obj interface{}) (interface{}, error) {
+	permission := obj.(model.GroupPermission)
+	result, err := driver.Create(gpr.conn, &permission)
 	if nil != err {
 		return 0, err
 	}
@@ -34,18 +34,18 @@ func (perm *permissionRepository) Create(cntx context.Context, obj interface{}) 
 	return id, nil
 }
 
-func (perm *permissionRepository) Update(cntx context.Context, obj interface{}) (interface{}, error) {
-	permission := obj.(model.Permission)
-	err := driver.UpdateById(perm.conn, &permission)
+func (gpr *groupPermissionRepository) Update(cntx context.Context, obj interface{}) (interface{}, error) {
+	permission := obj.(model.GroupPermission)
+	err := driver.UpdateById(gpr.conn, &permission)
 	return obj, err
 }
 
-func (perm *permissionRepository) Delete(cntx context.Context, id int64) error {
-	obj := &model.Permission{Id: id}
-	return driver.SoftDeleteById(perm.conn, obj, id)
+func (gpr *groupPermissionRepository) Delete(cntx context.Context, id int64) error {
+	obj := &model.GroupPermission{Id: id}
+	return driver.SoftDeleteById(gpr.conn, obj, id)
 }
 
-func (perm *permissionRepository) GetAll(cntx context.Context) ([]interface{}, error) {
-	obj := &model.Permission{}
-	return driver.GetAll(perm.conn, obj, 0, 0)
+func (gpr *groupPermissionRepository) GetAll(cntx context.Context) ([]interface{}, error) {
+	obj := &model.GroupPermission{}
+	return driver.GetAll(gpr.conn, obj, 0, 0)
 }

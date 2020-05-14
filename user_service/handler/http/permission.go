@@ -1,117 +1,117 @@
 package http
 
-// import (
-// 	"database/sql"
-// 	"encoding/json"
-// 	"net/http"
-// 	"strconv"
+import (
+	"database/sql"
+	"encoding/json"
+	"net/http"
+	"strconv"
 
-// 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi"
 
-// 	"pucsd2020-pp/user_service/handler"
-// 	"pucsd2020-pp/user_service/model"
-// 	"pucsd2020-pp/user_service/repository"
-// 	"pucsd2020-pp/user_service/repository/user"
-// )
+	"pucsd2020-pp/user_service/handler"
+	"pucsd2020-pp/user_service/model"
+	"pucsd2020-pp/user_service/repository"
+	"pucsd2020-pp/user_service/repository/permission"
+)
 
-// type User struct {
-// 	handler.HTTPHandler
-// 	repo repository.IRepository
-// }
+type Permission struct {
+	handler.HTTPHandler
+	repo repository.IRepository
+}
 
-// func NewUserHandler(conn *sql.DB) *User {
-// 	return &User{
-// 		repo: user.NewUserRepository(conn),
-// 	}
-// }
+func NewPermissionHandler(conn *sql.DB) *Permission {
+	return &Permission{
+		repo: permission.NewPermissionRepository(conn),
+	}
+}
 
-// func (user *User) GetHTTPHandler() []*handler.HTTPHandler {
-// 	return []*handler.HTTPHandler{
-// 		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user/{id}", Func: user.GetByID},
-// 		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPost, Path: "user", Func: user.Create},
-// 		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPut, Path: "user/{id}", Func: user.Update},
-// 		&handler.HTTPHandler{Authenticated: true, Method: http.MethodDelete, Path: "user/{id}", Func: user.Delete},
-// 		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user", Func: user.GetAll},
-// 	}
-// }
+func (perm *Permission) GetHTTPHandler() []*handler.HTTPHandler {
+	return []*handler.HTTPHandler{
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "permission/{id}", Func: perm.GetByID},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPost, Path: "permission", Func: perm.Create},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPut, Path: "permission/{id}", Func: perm.Update},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodDelete, Path: "permission/{id}", Func: perm.Delete},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "permission", Func: perm.GetAll},
+	}
+}
 
-// func (user *User) GetByID(w http.ResponseWriter, r *http.Request) {
-// 	var usr interface{}
-// 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-// 	for {
-// 		if nil != err {
-// 			break
-// 		}
+func (perm *Permission) GetByID(w http.ResponseWriter, r *http.Request) {
+	var usr interface{}
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	for {
+		if nil != err {
+			break
+		}
 
-// 		usr, err = user.repo.GetByID(r.Context(), id)
-// 		break
-// 	}
+		usr, err = perm.repo.GetByID(r.Context(), id)
+		break
+	}
 
-// 	handler.WriteJSONResponse(w, r, usr, http.StatusOK, err)
-// }
+	handler.WriteJSONResponse(w, r, usr, http.StatusOK, err)
+}
 
-// func (user *User) Create(w http.ResponseWriter, r *http.Request) {
-// 	var usr model.User
-// 	err := json.NewDecoder(r.Body).Decode(&usr)
-// 	for {
-// 		if nil != err {
-// 			break
-// 		}
+func (perm *Permission) Create(w http.ResponseWriter, r *http.Request) {
+	var permission model.Permission
+	err := json.NewDecoder(r.Body).Decode(&permission)
+	for {
+		if nil != err {
+			break
+		}
 
-// 		_, err = user.repo.Create(r.Context(), usr)
-// 		break
-// 	}
-// 	handler.WriteJSONResponse(w, r, usr, http.StatusOK, err)
-// }
+		_, err = perm.repo.Create(r.Context(), permission)
+		break
+	}
+	handler.WriteJSONResponse(w, r, permission, http.StatusOK, err)
+}
 
-// func (user *User) Update(w http.ResponseWriter, r *http.Request) {
-// 	var iUsr interface{}
-// 	id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-// 	usr := model.User{}
-// 	err := json.NewDecoder(r.Body).Decode(&usr)
-// 	for {
-// 		if nil != err {
-// 			break
-// 		}
-// 		usr.Id = id
-// 		if nil != err {
-// 			break
-// 		}
+func (perm *Permission) Update(w http.ResponseWriter, r *http.Request) {
+	var iUsr interface{}
+	id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	usr := model.Permission{}
+	err := json.NewDecoder(r.Body).Decode(&usr)
+	for {
+		if nil != err {
+			break
+		}
+		usr.Id = id
+		if nil != err {
+			break
+		}
 
-// 		// set logged in user id for tracking update
-// 		usr.UpdatedBy = 0
+		// set logged in user id for tracking update
+		usr.UpdatedBy = 0
 
-// 		iUsr, err = user.repo.Update(r.Context(), usr)
-// 		if nil != err {
-// 			break
-// 		}
-// 		usr = iUsr.(model.User)
-// 		break
-// 	}
+		iUsr, err = perm.repo.Update(r.Context(), usr)
+		if nil != err {
+			break
+		}
+		usr = iUsr.(model.Permission)
+		break
+	}
 
-// 	handler.WriteJSONResponse(w, r, usr, http.StatusOK, err)
-// }
+	handler.WriteJSONResponse(w, r, usr, http.StatusOK, err)
+}
 
-// func (user *User) Delete(w http.ResponseWriter, r *http.Request) {
-// 	var payload string
-// 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-// 	for {
-// 		if nil != err {
-// 			break
-// 		}
+func (perm *Permission) Delete(w http.ResponseWriter, r *http.Request) {
+	var payload string
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	for {
+		if nil != err {
+			break
+		}
 
-// 		err = user.repo.Delete(r.Context(), id)
-// 		if nil != err {
-// 			break
-// 		}
-// 		payload = "User deleted successfully"
-// 		break
-// 	}
+		err = perm.repo.Delete(r.Context(), id)
+		if nil != err {
+			break
+		}
+		payload = "User deleted successfully"
+		break
+	}
 
-// 	handler.WriteJSONResponse(w, r, payload, http.StatusOK, err)
-// }
+	handler.WriteJSONResponse(w, r, payload, http.StatusOK, err)
+}
 
-// func (user *User) GetAll(w http.ResponseWriter, r *http.Request) {
-// 	usrs, err := user.repo.GetAll(r.Context())
-// 	handler.WriteJSONResponse(w, r, usrs, http.StatusOK, err)
-// }
+func (perm *Permission) GetAll(w http.ResponseWriter, r *http.Request) {
+	usrs, err := perm.repo.GetAll(r.Context())
+	handler.WriteJSONResponse(w, r, usrs, http.StatusOK, err)
+}

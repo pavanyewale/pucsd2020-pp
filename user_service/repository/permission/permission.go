@@ -12,8 +12,8 @@ type permissionRepository struct {
 	conn *sql.DB
 }
 
-//NewUserRepository ...
-func NewUserRepository(conn *sql.DB) *permissionRepository {
+//NewPermissionRepository ...
+func NewPermissionRepository(conn *sql.DB) *permissionRepository {
 	return &permissionRepository{conn: conn}
 }
 

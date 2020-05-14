@@ -32,17 +32,18 @@ func init() {
 
 	handlers = []handler.IHTTPHandler{
 		httpHandler.NewUserHandler(dbConn),
+		httpHandler.NewPermissionHandler(dbConn),
+		httpHandler.NewGroupHandler(dbConn),
+		httpHandler.NewUserPermissionHandler(dbConn),
+		httpHandler.NewUserGroupHandler(dbConn),
+		httpHandler.NewGroupPermissionHandler(dbConn),
 	}
 }
 
 func createRouterGroup(router *chi.Mux) {
 	router.Group(func(r chi.Router) {
 		for _, hdlr := range handlers { // register all handlers
-			for _, hlr := range hdlr.GetHTTPHandler() {~*
-
-
-
-				
+			for _, hlr := range hdlr.GetHTTPHandler() {
 				path := fmt.Sprintf("/webapi/v1/%s", hlr.Path)
 				switch hlr.Method {
 				case http.MethodGet:

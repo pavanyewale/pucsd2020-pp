@@ -11,6 +11,7 @@ import (
 	"pucsd2020-pp/user_service/handler"
 	"pucsd2020-pp/user_service/model"
 	"pucsd2020-pp/user_service/repository"
+	"pucsd2020-pp/user_service/repository/group"
 )
 
 type Group struct {
@@ -18,19 +19,19 @@ type Group struct {
 	repo repository.IRepository
 }
 
-func NewGroupHandler(conn *sql.DB) *User {
-	return &User{
-		repo: group.NewGroupRepository(),
+func NewGroupHandler(conn *sql.DB) *Group {
+	return &Group{
+		repo: group.NewGroupRepository(conn),
 	}
 }
 
 func (group *Group) GetHTTPHandler() []*handler.HTTPHandler {
 	return []*handler.HTTPHandler{
-		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user/{id}", Func: user.GetByID},
-		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPost, Path: "user", Func: user.Create},
-		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPut, Path: "user/{id}", Func: user.Update},
-		&handler.HTTPHandler{Authenticated: true, Method: http.MethodDelete, Path: "user/{id}", Func: user.Delete},
-		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user", Func: user.GetAll},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user/{id}", Func: group.GetByID},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPost, Path: "user", Func: group.Create},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodPut, Path: "user/{id}", Func: group.Update},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodDelete, Path: "user/{id}", Func: group.Delete},
+		&handler.HTTPHandler{Authenticated: true, Method: http.MethodGet, Path: "user", Func: group.GetAll},
 	}
 }
 
@@ -42,7 +43,7 @@ func (group *Group) GetByID(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		grp, err := group.repo.GetByID(r.Context(), id)
+		grp, err = group.repo.GetByID(r.Context(), id)
 		break
 	}
 
@@ -57,7 +58,7 @@ func (group *Group) Create(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		_, err = user.repo.Create(r.Context(), grp)
+		_, err = group.repo.Create(r.Context(), grp)
 		break
 	}
 	handler.WriteJSONResponse(w, r, grp, http.StatusOK, err)
